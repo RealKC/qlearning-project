@@ -8,3 +8,14 @@ wheels/
 
 # Virtual environments
 .venv
+
+# Report related intermediary files
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.pdf
+*.synctex.gz
+*.toc
+report/_minted-report
