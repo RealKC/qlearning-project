@@ -19,3 +19,5 @@ wheels/
 *.synctex.gz
 *.toc
 report/_minted-report
+*.bbl
+*.blg
