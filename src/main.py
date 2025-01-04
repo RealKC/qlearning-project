@@ -1,5 +1,9 @@
 # Example file showing a basic pygame "game loop"
 import pygame
+from visuals import StraightLine, SIZE, Tile, Diagonal, render_map
+
+tilemap = render_map("03240\n01010\n06250")
+
 
 # pygame setup
 pygame.init()
@@ -15,7 +19,9 @@ while running:
             running = False
 
     # fill the screen with a color to wipe away anything from last frame
-    screen.fill("purple")
+    screen.fill("white")
+
+    tilemap.draw(screen)
 
     # RENDER YOUR GAME HERE
 
