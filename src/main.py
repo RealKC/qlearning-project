@@ -1,6 +1,6 @@
 # Example file showing a basic pygame "game loop"
 import pygame
-from visuals import StraightLine, SIZE, Tile, Diagonal, render_map
+from visuals import render_map
 
 tilemap = render_map("03240\n01010\n06250")
 
