@@ -111,6 +111,8 @@ def render_map(map: str, goal: Coordinate, init: Coordinate) -> TileMap:
                     tile_line.append(Diagonal(coord, 180))
                 case "6":
                     tile_line.append(Diagonal(coord, 270))
+                case "+":
+                    tile_line.append(FourWayIntersection(coord))
         res.append(tile_line)
 
     return TileMap(res, goal, init)
@@ -182,3 +184,8 @@ class Diagonal(Tile):
                 return direction in ["up", "left"]
             case 270:
                 return direction in ["down", "left"]
+
+
+class FourWayIntersection(Tile):
+    def can_go_to(self, direction) -> bool:
+        return True
