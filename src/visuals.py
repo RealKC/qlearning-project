@@ -67,10 +67,12 @@ class TileMap:
         goal = Surface((64, 64))
         goal.fill("yellow")
 
-        bg.blit(goal, (self.goal[0] * SIZE, self.goal[1] * SIZE))
+        bg.blit(goal, (self.goal[0] * SIZE + SIZE / 4, self.goal[1] * SIZE + SIZE / 4))
 
         goal.fill("red")
-        bg.blit(goal, (self.agent[0] * SIZE, self.agent[1] * SIZE))
+        bg.blit(
+            goal, (self.agent[0] * SIZE + SIZE / 4, self.agent[1] * SIZE + SIZE / 4)
+        )
 
     def move_agent(self, coord: Coordinate):
         # TODO: Animate this somehow
