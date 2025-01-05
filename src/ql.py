@@ -32,7 +32,7 @@ class QLearningAgent:
 
         self.rewards = []
 
-    def train(self, episode_count: int, max_iterations=10_000):
+    def train(self, episode_count: int, max_iterations=100):
         self.rewards = []
 
         for _ in range(0, episode_count):
