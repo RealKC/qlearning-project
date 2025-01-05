@@ -45,8 +45,6 @@ class QLEnvironment:
             x = s // tilemap.width
             y = s % tilemap.width
 
-            print(f"# state={s} -> {x}x{y}")
-
             tile: Tile = tilemap.tiles[x][y]
 
             mask = [0, 0, 0, 0]
