@@ -59,6 +59,7 @@ class QLearningAgent:
 
     def visual_reset(self):
         self._current_visual_state = self.environment.reset()
+        self.exploration_probability = 0
 
     def do_visual_step(self) -> bool:
         cs = self._do_episode_iteration_step(self._current_visual_state, visual=True)
