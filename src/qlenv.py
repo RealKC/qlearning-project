@@ -1,5 +1,5 @@
 import random
-from visuals import TileMap, Tile, Coordinate, directions, Direction
+from visuals import TileMap, Tile, Coordinate, directions, Direction, SIZE
 
 
 class QLEnvironment:
@@ -33,13 +33,15 @@ class QLEnvironment:
         def move(action: Direction, x: int, y: int) -> float:
             match action:
                 case "left":
-                    return self._position_to_state(max(0, x - 1), y)
+                    x = max(0, x - 1)
                 case "right":
-                    return self._position_to_state(min(x + 1, tilemap.width - 1), y)
+                    x = min(x + 1, tilemap.width - 1)
                 case "up":
-                    return self._position_to_state(x, max(0, y - 1))
+                    y = max(0, y - 1)
                 case "down":
-                    return self._position_to_state(x, max(y + 1, tilemap.height - 1))
+                    y = max(y + 1, tilemap.height - 1)
+
+            return self._position_to_state(x, y), x, y
 
         for s in range(self.n_observations):
             x = s // tilemap.width
@@ -59,11 +61,12 @@ class QLEnvironment:
             probabilities = list(map(lambda x: x / n, mask))
 
             for a in range(self.n_actions):
-                terminated = tilemap.is_goal(tile.coord)
+                ns, nx, ny = move(directions[a], x, y)
+                terminated = tilemap.is_goal((nx * SIZE, ny * SIZE))
                 reward = 1 if terminated else 0
 
                 self.transition_matrix[s][a] = (
-                    move(directions[a], x, y),
+                    ns,
                     reward,
                     terminated,
                     probabilities[a],

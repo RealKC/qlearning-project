@@ -63,11 +63,11 @@ class QLearningAgent:
     def do_visual_step(self) -> bool:
         cs = self._do_episode_iteration_step(self._current_visual_state, visual=True)
 
-        if cs is not None:
-            self._current_visual_state = cs
-            return False
+        if cs is None:
+            return True
 
-        return True
+        self._current_visual_state = cs
+        return False
 
     def _do_episode_iteration_step(
         self, current_state: float, visual: bool = False
