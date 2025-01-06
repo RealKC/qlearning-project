@@ -5,6 +5,8 @@ from pygame import Surface
 
 SIZE = 128
 
+DEBUG_DIRECTIONS = False
+
 Coordinate = tuple[float, float]
 
 Direction = Literal["up", "right", "down", "left"]
@@ -138,9 +140,10 @@ class StraightLine(Tile):
         if self.orientation == "horizontal":
             tile = pygame.transform.rotate(tile, 90)
 
-        self._draw_allowed_directions(tile)
-        orientation = self.font.render(self.orientation, True, (0, 0, 0))
-        tile.blit(orientation, (SIZE / 2, SIZE / 2))
+        if DEBUG_DIRECTIONS:
+            self._draw_allowed_directions(tile)
+            orientation = self.font.render(self.orientation, True, (0, 0, 0))
+            tile.blit(orientation, (SIZE / 2, SIZE / 2))
 
         bg.blit(tile, self.coord)
 
@@ -165,12 +168,11 @@ class Diagonal(Tile):
         pygame.draw.line(tile, "black", (0, SIZE), (SIZE, 0), 4)
         tile = pygame.transform.rotate(tile, self.angle)
 
-        font = pygame.font.SysFont(pygame.font.get_default_font(), size=12)
-        self._draw_allowed_directions(tile)
+        if DEBUG_DIRECTIONS:
+            self._draw_allowed_directions(tile)
+            degrees = self.font.render(str(self.angle), True, (0, 0, 0))
 
-        degrees = font.render(str(self.angle), True, (0, 0, 0))
-
-        tile.blit(degrees, (SIZE / 2, SIZE / 2))
+            tile.blit(degrees, (SIZE / 2, SIZE / 2))
 
         bg.blit(tile, self.coord)
 
