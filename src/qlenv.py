@@ -101,8 +101,14 @@ class QLEnvironment:
 
         return chosen
 
-    def step(self, action) -> tuple[float, float, bool]:
+    def step(self, action, visual: bool = False) -> tuple[float, float, bool]:
         next, reward, terminated, p = self.transition_matrix[self.current_state][action]
         self.current_state = next
+
+        if visual:
+            x = self.current_state // self.tilemap.width
+            y = self.current_state % self.tilemap.width
+
+            self.tilemap.move_agent((x, y))
 
         return next, reward, terminated

@@ -18,6 +18,8 @@ class QLearningAgent:
 
     rewards: list[float]
 
+    _current_visual_state: float
+
     def __init__(self, n_observations: int, n_actions: int, environment: QLEnvironment):
         self.n_actions = n_actions
         self.n_observations = n_observations
@@ -32,6 +34,8 @@ class QLearningAgent:
 
         self.rewards = []
 
+        self._current_visual_state = 0
+
     def train(self, episode_count: int, max_iterations=100):
         self.rewards = []
 
@@ -44,23 +48,41 @@ class QLearningAgent:
         total_reward = 0.0
 
         for i in range(max_iterations):
-            if np.random.uniform(0, 1) < self.exploration_probability:
-                action = self.environment.sample_action()
-            else:
-                action = np.argmax(self.table[current_state, :])
+            current_state = self._do_episode_iteration_step(current_state)
 
-            next_state, reward, done = self.environment.step(action)
-            # fmt: off
-            self.table[current_state, action] = (1 - self.learning_rate) * self.table[current_state, action] + self.learning_rate * (reward + self.gamma * max(self.table[next_state, :]))
-            # fmt: on
-
-            total_reward += reward
-
-            if done:
+            if current_state is None:
                 break
-
-            current_state = next_state
 
         self.exploration_probability = max(0.1, np.exp(-self.decay_constant * i))
 
         return total_reward
+
+    def visual_reset(self):
+        self._current_visual_state = self.environment.reset()
+
+    def do_visual_step(self) -> bool:
+        cs = self._do_episode_iteration_step(self._current_visual_state, visual=True)
+
+        if cs is not None:
+            self._current_visual_state = cs
+            return False
+
+        return True
+
+    def _do_episode_iteration_step(
+        self, current_state: float, visual: bool = False
+    ) -> float | None:
+        if np.random.uniform(0, 1) < self.exploration_probability:
+            action = self.environment.sample_action()
+        else:
+            action = np.argmax(self.table[current_state, :])
+
+        next_state, reward, done = self.environment.step(action, visual)
+        # fmt: off
+        self.table[current_state, action] = (1 - self.learning_rate) * self.table[current_state, action] + self.learning_rate * (reward + self.gamma * max(self.table[next_state, :]))
+        # fmt: on
+
+        if done:
+            return None
+
+        return next_state

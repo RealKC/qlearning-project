@@ -29,10 +29,19 @@ screen = pygame.display.set_mode((1280, 720))
 clock = pygame.time.Clock()
 running = True
 
+AGENT_VISUAL_STEP = pygame.USEREVENT + 666
+pygame.time.set_timer(event=AGENT_VISUAL_STEP, millis=500)
+
+agent.visual_reset()
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        if event.type == AGENT_VISUAL_STEP:
+            terminated = agent.do_visual_step()
+            if terminated:
+                pygame.time.set_timer(event=AGENT_VISUAL_STEP, millis=0)
 
     screen.fill("white")
 
