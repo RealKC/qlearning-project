@@ -69,11 +69,11 @@ class TileMap:
         goal = Surface((64, 64))
         goal.fill("yellow")
 
-        bg.blit(goal, (self.goal[0] * SIZE + SIZE / 4, self.goal[1] * SIZE + SIZE / 4))
+        bg.blit(goal, (self.goal[1] * SIZE + SIZE / 4, self.goal[0] * SIZE + SIZE / 4))
 
         goal.fill("red")
         bg.blit(
-            goal, (self.agent[0] * SIZE + SIZE / 4, self.agent[1] * SIZE + SIZE / 4)
+            goal, (self.agent[1] * SIZE + SIZE / 4, self.agent[0] * SIZE + SIZE / 4)
         )
 
     def move_agent(self, coord: Coordinate):
@@ -97,7 +97,7 @@ def render_map(map: str, goal: Coordinate, init: Coordinate) -> TileMap:
     for i, line in enumerate(lines):
         tile_line = []
         for j, ch in enumerate(line):
-            coord = (i * SIZE, j * SIZE)
+            coord = (j * SIZE, i * SIZE)
             match ch:
                 case "0":
                     tile_line.append(Tile(coord))
@@ -137,7 +137,7 @@ class StraightLine(Tile):
         pygame.draw.line(tile, "black", (0, 0), (0, SIZE), 6)
         pygame.draw.line(tile, "black", (SIZE, 0), (SIZE, SIZE), 6)
 
-        if self.orientation == "horizontal":
+        if self.orientation == "vertical":
             tile = pygame.transform.rotate(tile, 90)
 
         if DEBUG_DIRECTIONS:

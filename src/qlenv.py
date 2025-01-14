@@ -100,7 +100,11 @@ class QLEnvironment:
             if t[3] > 0:
                 choices.append(i)
 
-        chosen = random.choice(choices)
+        try:
+            chosen = random.choice(choices)
+        except:
+            print(f"failed to pick choice: {self.current_state} {t[3]}, {choices}")
+            raise
 
         return chosen
 

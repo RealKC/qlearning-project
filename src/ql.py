@@ -48,7 +48,9 @@ class QLearningAgent:
         total_reward = 0.0
 
         for i in range(max_iterations):
-            current_state = self._do_episode_iteration_step(current_state)
+            current_state, reward = self._do_episode_iteration_step(current_state)
+
+            total_reward += reward
 
             if current_state is None:
                 break
@@ -62,7 +64,10 @@ class QLearningAgent:
         self.exploration_probability = 0
 
     def do_visual_step(self) -> bool:
-        cs = self._do_episode_iteration_step(self._current_visual_state, visual=True)
+        if self._current_visual_state is None:
+            return True
+
+        cs, _ = self._do_episode_iteration_step(self._current_visual_state, visual=True)
 
         if cs is None:
             return True
@@ -84,6 +89,6 @@ class QLearningAgent:
         # fmt: on
 
         if done:
-            return None
+            return None, reward
 
-        return next_state
+        return next_state, reward
